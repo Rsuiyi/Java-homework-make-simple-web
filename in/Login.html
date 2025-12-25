@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="./Login.css">
+        <title>登录Login</title>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <style>
+            /* 模态框基础样式 */
+        </style>
+    </head>
+    <body>
+        <div class="modal" id="successModal">
+            <div class="modal-content">
+                <h2>操作成功</h2>
+                <p id="successMessage"></p>
+                <button onclick="closeModal('successModal')" id="success">确定</button>
+            </div>
+        </div>
+
+        <div class="modal" id="errorModal">
+            <div class="modal-content">
+                <h2>操作失败</h2>
+                <p id="errorMessage"></p>
+                <button onclick="closeModal('errorModal')" id="error">确定</button>
+            </div>
+        </div>
+        <div class="box">
+            <div class="pre-box">
+                <h1>WELCOME</h1>
+                <p>请登录或注册以继续</p>
+                <div class ="img-box">
+                    <img src="./2.jpg" alt="欢迎图片">
+                </div>
+            </div>
+            <div class="register-form">
+                <div class ="title-box">
+                    <h1>注册</h1>
+                </div>
+                <form action="/register" method="post">
+                    <div class="input-box">
+                        <input type="text" id="RegisterUser" name="username" placeholder="用户名/邮箱/手机号" required>
+                        <input type="password" id="RegisterPassword" name="password" placeholder="密码" required>
+                        <input type="password" id="RegisterConfirmPassword" name="confirm_password" placeholder="确认密码" required>
+                    </div>
+                    <div class="btn-box">
+                        <button type="button" id="register">注册</button>
+                        <p onclick="mySwitch()">已经有账号？登录</p>
+                    </div>
+                </form>
+            </div>
+            <div class="login-form">
+                <div class ="title-box">
+                    <h1>登录</h1>
+                </div>
+                <form action="/login" method="post">
+                    <div class="input-box">
+                        <input type="text" id="LoginUser" name="username" placeholder="用户名/邮箱/手机号" required>
+                        <input type="password" id="LoginPassword" name="password" placeholder="密码" required>
+                    </div>
+                    <div class="btn-box">
+                        <button type="button" id="submit">登录</button>
+                        <p onclick="mySwitch()">还没有账号？注册</p>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <script>
+            let flag = true
+            const mySwitch = () => {
+                if (flag) {
+                    $(".pre-box").css("transform", "translateX(100%)")
+                    $(".pre-box").css("background", "rgb(145, 193, 199)")
+                    $("img").attr("src", "./1.jpg")
+                } else {
+                    $(".pre-box").css("transform", "translateX(0%)")
+                    $(".pre-box").css("background", "rgb(184, 194, 195)")
+                    $("img").attr("src", "./2.jpg")
+                }
+                flag = !flag
+            }
+            function showModal(modalId, message) {
+            const msgEl = document.getElementById(modalId === 'successModal' ? 'successMessage' : 'errorMessage');
+            if (msgEl) msgEl.textContent = message;
+            const modalEl = document.getElementById(modalId);
+            if (modalEl) modalEl.style.display = 'flex';
+        }
+        </script>
+                <!-- 可选：在客户端覆盖后端地址（当浏览器不在后端同一台机器上时使用） -->
+                <!--
+                    示例：在另一台设备上访问此页面，但后端运行在 172.27.125.147:8081，取消注释并设置：
+                    <script>window.__BASE_URL__ = 'http://172.27.125.147:8081';</script>
+                -->
+                <script>
+                    // 如果通过本地 dev proxy (端口 8081) 访问，则使用相对路径让代理转发，避免 CORS
+                    if (location.port === '8081') {
+                        window.__BASE_URL__ = '';
+                        console.log('Using dev proxy: base URL set to empty (relative paths)');
+                    }
+                    // 否则保持默认行为（可在页面中手动设置 window.__BASE_URL__）
+                </script>
+                <script type="module" src="/dist/Login.js"></script>
+    </body>
+</html>
+    
+    

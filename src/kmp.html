@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KMP — Hello 算法</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header class="header">
+        <h1 class="header-title">Hello 算法</h1>
+        <p class="header-subtitle">数据结构与算法入门教程</p>
+        <button type="button" id="signout">登出</button>
+    </header>
+    <div class="container">
+        <div id="sidebar-root"></div>
+
+        <main class="content">
+            <section id="kmp" class="card section open" aria-expanded="true">
+                <h1>KMP 算法（模式匹配）</h1>
+                <div class="section-body">
+                    <p>KMP是一种高效的字符串匹配算法，通过预处理模式串的前缀函数来避免重复比较。</p>
+                    <!-- hero image removed to avoid external dependency -->
+
+                    <h2>KMP 行数组可视化（可移动指针 i / j）</h2>
+                    <div class="kmp-controls" style="margin-bottom:12px;display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+                      <label style="display:flex;gap:8px;align-items:center;">数组 (以逗号分隔): <input id="kmp-array-input" value="a,b,a,b,a" style="min-width:200px;padding:4px"/></label>
+                      <button id="kmp-reset">重置</button>
+                      <button id="kmp-prev">上一步</button>
+                      <button id="kmp-next">下一步</button>
+                      <span id="kmp-status" aria-live="polite" style="margin-left:8px;color:#333"></span>
+                    </div>
+
+                    <div id="kmp-visual">
+                      <div class="mermaid" id="kmp-mermaid">
+graph LR
+  A0[0:'a'] --> A1[1:'b'] --> A2[2:'a'] --> A3[3:'b'] --> A4[4:'a']
+  i((i)) --> A0
+  j((j)) --> A0
+</div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+    <div id="logout-modal" class="modal">
+        <div class="modal-content">
+            <h3>确认登出？</h3>
+            <p>您确定要退出当前账号吗？</p>
+            <div class="modal-buttons">
+                <button id="confirm-logout">确认</button>
+                <button id="cancel-logout">返回</button>
+            </div>
+        </div>
+    </div>
+    <!-- Mermaid: CDN + 初始化（startOnLoad: false，脚本会手动渲染以支持动态更新） -->
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+    <script>
+      mermaid.initialize({ startOnLoad: false, theme: 'default' });
+    </script>
+
+    <script>
+      (function(){
+        const mermaidContainer = document.getElementById('kmp-mermaid');
+        const input = document.getElementById('kmp-array-input');
+        const prevBtn = document.getElementById('kmp-prev');
+        const nextBtn = document.getElementById('kmp-next');
+        const resetBtn = document.getElementById('kmp-reset');
+        const status = document.getElementById('kmp-status');
+
+        let arr = input.value.split(',').map(s => s.trim()).filter(Boolean);
+        let i = 0, j = 0;
+
+        function buildDiagram(i, j){
+          // build node list
+          const nodes = arr.map((v, idx) => `A${idx}[${idx}:'${String(v).replace(/'/g, "\\'")}']`).join(' --> ');
+          const pointers = `\n  i((i)) --> A${Math.min(Math.max(0,i), Math.max(0,arr.length-1))}\n  j((j)) --> A${Math.min(Math.max(0,j), Math.max(0,arr.length-1))}`;
+          return `graph LR\n  ${nodes}${pointers}`;
+        }
+
+        function render(){
+          // if array empty, show message
+          if (arr.length === 0) {
+            const srcEmpty = 'graph LR\n  empty[数组为空]';
+            mermaid.render('kmp-empty-' + Date.now(), srcEmpty).then(({ svg }) => {
+              mermaidContainer.innerHTML = svg;
+            }).catch(() => {
+              mermaidContainer.textContent = '数组为空';
+            });
+            status.textContent = '数组为空';
+            return;
+          }
+
+          // ensure indices in range
+          i = Math.min(Math.max(0, i), arr.length - 1);
+          j = Math.min(Math.max(0, j), arr.length - 1);
+
+          const src = buildDiagram(i, j);
+          const id = 'kmp-' + Date.now();
+          mermaid.render(id, src).then(({ svg }) => {
+            mermaidContainer.innerHTML = svg;
+          }).catch(err => {
+            mermaidContainer.textContent = '渲染错误';
+            console.error('Mermaid render error', err);
+          });
+
+          status.textContent = `i=${i}, j=${j}`;
+        }
+
+        prevBtn.addEventListener('click', () => {
+          // 优先移动 j，如果 j>0 则 j--，否则 i--（简化示例行为）
+          if (j > 0) j--; else if (i > 0) i--;
+          render();
+        });
+
+        nextBtn.addEventListener('click', () => {
+          // 优先移动 j 到末尾，然后移动 i（简化示例行为）
+          if (j < arr.length - 1) j++; else if (i < arr.length - 1) i++;
+          render();
+        });
+
+        resetBtn.addEventListener('click', () => {
+          arr = input.value.split(',').map(s => s.trim()).filter(Boolean);
+          i = 0; j = 0; render();
+        });
+
+        input.addEventListener('change', () => {
+          arr = input.value.split(',').map(s => s.trim()).filter(Boolean);
+          i = 0; j = 0; render();
+        });
+
+        // initial render
+        render();
+      })();
+    </script>
+
+    <script src="scripts.js"></script>
+</body>
+</html>

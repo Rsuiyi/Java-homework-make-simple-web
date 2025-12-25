@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>树 — Hello 算法</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header class="header">
+        <h1 class="header-title">Hello 算法</h1>
+        <p class="header-subtitle">数据结构与算法入门教程</p>
+        <button type="button" id="signout">登出</button>
+    </header>
+    <div class="container">
+        <div id="sidebar-root"></div>
+
+        <main class="content">
+            <section id="tree" class="card section open" aria-expanded="true">
+                <h1>树</h1>
+                <div class="section-body">
+                    <p>二叉树、递归与遍历等常见问题与解法。</p>
+                    <!-- hero image removed to avoid external dependency -->
+                    <!-- Mermaid 图：树结构示意 -->
+                    <h2>树结构示意</h2>
+                    <div class="mermaid">
+graph TD
+  A[根节点]
+  A --> B[子节点 1]
+  A --> C[子节点 2]
+  B --> D[子节点 1.1]
+  B --> E[子节点 1.2]
+  C --> F[子节点 2.1]
+</div>
+                </div>
+            </section>
+        </main>
+    </div>
+    <div id="logout-modal" class="modal">
+        <div class="modal-content">
+            <h3>确认登出？</h3>
+            <p>您确定要退出当前账号吗？</p>
+            <div class="modal-buttons">
+                <button id="confirm-logout">确认</button>
+                <button id="cancel-logout">返回</button>
+            </div>
+        </div>
+    </div>
+    <!-- Mermaid: CDN + 初始化 -->
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+    <script>
+      mermaid.initialize({ startOnLoad: true, theme: 'default' });
+    </script>
+
+    <script src="scripts.js"></script>
+</body>
+</html>

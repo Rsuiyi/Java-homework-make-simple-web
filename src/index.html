@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hello 算法 — 目录预览</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header class="header">
+        <h1 class="header-title">Hello 算法</h1>
+        <p class="header-subtitle">数据结构与算法入门展示</p>
+        <button type="button" id="signout">登出</button>
+    </header>
+    <div class="container">
+        <div id="sidebar-root"></div>
+
+        <main class="content">
+            <h1>请选择左侧章节</h1>
+            <p>使用左侧侧栏跳转到对应章节页面（KMP、树、图）。</p>
+        </main>
+    </div>
+    <div id="logout-modal" class="modal">
+        <div class="modal-content">
+            <h3>确认登出？</h3>
+            <p>您确定要退出当前账号吗？</p>
+            <div class="modal-buttons">
+                <button id="confirm-logout">确认</button>
+                <button id="cancel-logout">返回</button>
+            </div>
+        </div>
+    </div>
+    <script src="scripts.js"></script>
+</body>
+</html>
